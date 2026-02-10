@@ -10,107 +10,49 @@
             --bg: #f8f9fa;
             --text: #212529;
             --white: #ffffff;
-            /* Colori Impianti */
             --color-abbatini: #003366;
             --color-infiorata: #007bff;
             --color-default: #6c757d;
         }
 
         body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
-        
-        header { 
-            text-align: center; 
-            padding: 30px; 
-            background: var(--white); 
-            margin-bottom: 25px; 
-            border-radius: 15px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
-        }
+        header { text-align: center; padding: 20px; background: var(--white); margin-bottom: 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .logo { max-width: 120px; height: auto; display: block; margin: 0 auto 10px auto; }
+        h1 { font-size: 1.5rem; color: var(--color-abbatini); text-transform: uppercase; margin: 0; }
 
-        /* Correzione visualizzazione Logo */
-        .logo { 
-            max-width: 120px; 
-            height: auto; 
-            display: block; 
-            margin: 0 auto 15px auto;
-        }
+        .filter-section { max-width: 1100px; margin: 0 auto 30px auto; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .filter-input, .filter-select { padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 1rem; min-width: 200px; outline: none; }
 
-        h1 { font-size: 1.6rem; color: var(--color-abbatini); text-transform: uppercase; margin: 0; }
+        .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 
-        .filter-section { 
-            max-width: 1100px; 
-            margin: 0 auto 30px auto; 
-            display: flex; 
-            gap: 12px; 
-            flex-wrap: wrap; 
-            justify-content: center; 
-        }
-
-        .filter-input, .filter-select { 
-            padding: 12px 15px; 
-            border: 2px solid #ddd; 
-            border-radius: 10px; 
-            font-size: 1rem; 
-            min-width: 220px; 
-            outline: none;
-        }
-
-        .filter-input:focus { border-color: var(--color-infiorata); }
-
-        .container { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 20px; 
-        }
-
-        /* Card Dinamica */
         .card { 
-            background: var(--white); 
-            padding: 20px; 
-            border-radius: 12px; 
-            border-left: 8px solid var(--color-default); /* Cambia in base all'impianto */
+            background: var(--white); padding: 20px; border-radius: 12px; 
+            border-left: 8px solid var(--color-default); 
             box-shadow: 0 4px 6px rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s;
+            display: flex; flex-direction: column; transition: transform 0.2s;
         }
 
-        .card:hover { transform: translateY(-5px); }
-
-        /* Colori Badge Giorni */
-        .day-badge { 
-            padding: 5px 12px; 
-            border-radius: 6px; 
-            font-weight: 700; 
-            font-size: 0.75rem; 
-            display: inline-block; 
-            margin-bottom: 12px; 
-            align-self: flex-start;
-            color: white;
-            text-transform: uppercase;
-        }
-
-        /* Classi colori giorni */
+        .day-badge { padding: 5px 12px; border-radius: 6px; font-weight: 700; font-size: 0.75rem; display: inline-block; margin-bottom: 12px; align-self: flex-start; color: white; text-transform: uppercase; }
+        
+        /* Colori Giorni */
         .bg-lunedi { background-color: #34495e; }
         .bg-martedi { background-color: #27ae60; }
         .bg-mercoledi { background-color: #f39c12; }
         .bg-giovedi { background-color: #8e44ad; }
         .bg-venerdi { background-color: #c0392b; }
 
-        .team-title { font-weight: 700; color: #333; font-size: 1.15rem; margin-bottom: 10px; line-height: 1.2; }
-        .time-info { font-size: 1.1rem; font-weight: 600; margin-bottom: 5px; color: #444; }
-        .field-info { font-size: 0.9rem; color: #666; font-weight: 500; }
+        .team-title { font-weight: 700; color: #333; font-size: 1.1rem; margin-bottom: 10px; }
+        .time-info { font-size: 1.1rem; font-weight: 600; color: #444; margin-bottom: 5px; }
+        .field-info { font-size: 0.9rem; color: #666; }
 
-        .loading { text-align: center; font-weight: bold; padding: 50px; font-size: 1.2rem; }
+        .loading { text-align: center; font-weight: bold; padding: 50px; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="CYTNHIA1920.jpg" alt="Logo Cynthia" class="logo" onerror="this.style.display='none'; console.log('Logo non trovato');">
+    <img src="CYTNHIA1920.jpg" alt="Logo Cynthia" class="logo" onerror="this.style.display='none'">
     <h1>Piano Allenamenti Live</h1>
 </header>
 
@@ -123,4 +65,106 @@
         <option value="MERCOLEDI">Mercoledì</option>
         <option value="GIOVEDI">Giovedì</option>
         <option value="VENERDI">Venerdì</option>
-    </select
+    </select>
+</div>
+
+<div id="loading" class="loading">Caricamento dati dal server...</div>
+<div class="container" id="scheduleContainer"></div>
+
+<script>
+    // Link al CSV (pubblicato sul web)
+    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRcfggcqh-gbdBcErqn9RP0JMx6HVrCXWReKDnixI3JMnVlF_J9cpaws3sHgEfUztCbjHELFws-_O9J/pub?output=csv';
+
+    const allowedTeams = [
+        "PROMOZIONE", "UNDER19", "UNDER17", "UNDER16", 
+        "UNDER15", "UNDER14 MISTER CARIOTI", "UNDER14 MISTER PENDENZA"
+    ];
+
+    async function fetchData() {
+        try {
+            const response = await fetch(csvUrl);
+            if (!response.ok) throw new Error("Errore nel recupero del file");
+            
+            const text = await response.text();
+            // Gestione righe e virgole (anche se ci sono virgole nei nomi)
+            const rows = text.split(/\r?\n/).map(row => row.split(','));
+            
+            const container = document.getElementById('scheduleContainer');
+            container.innerHTML = '';
+            document.getElementById('loading').style.display = 'none';
+
+            // Partiamo dalla seconda riga (indice 1) per saltare l'intestazione
+            for (let i = 1; i < rows.length; i++) {
+                const cols = rows[i];
+                if (!cols[0]) continue;
+
+                const teamName = cols[0].trim().toUpperCase();
+                
+                // Controllo se la squadra è tra quelle permesse
+                if (allowedTeams.some(t => teamName.includes(t))) {
+                    
+                    // Definiamo i 3 blocchi di allenamento possibili nel tuo CSV
+                    const sessions = [
+                        { campo: cols[1], giorno: cols[2], inizio: cols[3], fine: cols[4] },
+                        { campo: cols[5], giorno: cols[6], inizio: cols[7], fine: cols[8] },
+                        { campo: cols[9], giorno: cols[10], inizio: cols[11], fine: cols[12] }
+                    ];
+
+                    sessions.forEach(s => {
+                        if (s.giorno && s.giorno.trim() !== "" && s.giorno.trim().toUpperCase() !== "GIORNO") {
+                            createCard(teamName, s);
+                        }
+                    });
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            document.getElementById('loading').innerHTML = "Impossibile caricare i dati.<br>Assicurati di aver 'Pubblicato sul Web' il file Google Sheets in formato CSV.";
+        }
+    }
+
+    function createCard(team, s) {
+        const container = document.getElementById('scheduleContainer');
+        const cleanDay = s.giorno.trim().replace("'", "").toUpperCase();
+        const field = s.campo ? s.campo.trim().toUpperCase() : "";
+        
+        let borderColor = 'var(--color-default)';
+        if (field.includes('ABBATINI')) borderColor = 'var(--color-abbatini)';
+        if (field.includes('INFIORATA')) borderColor = 'var(--color-infiorata)';
+
+        let dayClass = 'bg-lunedi';
+        if (cleanDay.includes('MART')) dayClass = 'bg-martedi';
+        if (cleanDay.includes('MERC')) dayClass = 'bg-mercoledi';
+        if (cleanDay.includes('GIOV')) dayClass = 'bg-giovedi';
+        if (cleanDay.includes('VENE')) dayClass = 'bg-venerdi';
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.borderLeftColor = borderColor;
+        card.setAttribute('data-team', team);
+        card.setAttribute('data-day', cleanDay);
+        
+        card.innerHTML = `
+            <div class="day-badge ${dayClass}">${s.giorno}</div>
+            <div class="team-title">${team}</div>
+            <div class="time-info">🕒 ${s.inizio} - ${s.fine}</div>
+            <div class="field-info">🏟️ ${s.campo}</div>
+        `;
+        container.appendChild(card);
+    }
+
+    function filter() {
+        let q = document.getElementById('teamSearch').value.toUpperCase();
+        let d = document.getElementById('dayFilter').value.toUpperCase();
+        document.querySelectorAll('.card').forEach(card => {
+            let matchText = card.getAttribute('data-team').includes(q);
+            let matchDay = d === "" || card.getAttribute('data-day').includes(d);
+            card.classList.toggle('hidden', !(matchText && matchDay));
+        });
+    }
+
+    fetchData();
+</script>
+
+</body>
+</html>
