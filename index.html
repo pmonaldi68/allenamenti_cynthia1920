@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programma Allenamenti - Cynthia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #003366;
+            --bg: #f4f7f6;
+            --text: #333;
+            --white: #ffffff;
+            --accent: #dee2e6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--white);
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .logo { max-width: 100px; margin-bottom: 10px; }
+
+        /* Area Filtri */
+        .filter-section {
+            max-width: 1000px;
+            margin: 0 auto 30px auto;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-input, .filter-select {
+            padding: 12px 20px;
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+            min-width: 250px;
+        }
+
+        .filter-input:focus, .filter-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            border-top: 4px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: block; /* Importante per il filtro */
+        }
+
+        .team-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .session {
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--accent);
+        }
+
+        .session:last-child { border-bottom: none; }
+
+        .day { font-weight: 600; color: #555; font-size: 0.85rem; text-transform: uppercase; }
+        .time { display: block; font-size: 1.1rem; margin: 2px 0; }
+        .field-label { font-size: 0.85rem; color: #888; }
+
+        /* Nascondi card */
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="CYTNHIA1920.jpg" alt="Logo Cynthia" class="logo">
+    <h1>Calendario Allenamenti</h1>
+</header>
+
+<div class="filter-section">
+    <input type="text" id="teamSearch" class="filter-input" placeholder="Cerca squadra (es. Under 15)..." onkeyup="filterPrograms()">
+    
+    <select id="fieldFilter" class="filter-select" onchange="filterPrograms()">
+        <option value="">Tutti i campi</option>
+        <option value="Abbatini Bruno">Abbatini Bruno</option>
+        <option value="Città dell'Infiorata">Città dell'Infiorata</option>
+    </select>
+</div>
+
+<div class="container" id="scheduleContainer">
+    <div class="card" data-team="PROMOZIONE" data-fields="Abbatini Bruno">
+        <div class="team-name">Promozione</div>
+        <div class="session">
+            <span class="day">Mar - Mer - Ven</span>
+            <span class="time">18:00 - 20:00</span>
+            <span class="field-label">📍 Abbatini Bruno</span>
+        </div>
+    </div>
+
+    <div class="card" data-team="UNDER 19" data-fields="Città dell'Infiorata">
+        <div class="team-name">Under 19</div>
+        <div class="session">
+            <span class="day">Lun - Mer - Gio</span>
+            <span class="time">19:30 - 21:00</span>
+            <span class="field-label">📍 Città dell'Infiorata</span>
+        </div>
+    </div>
+
+    <div class="card" data-team="UNDER 17" data-fields="Città dell'Infiorata">
+        <div class="team-name">Under 17</div>
+        <div class="session">
+            <span class="day">Mar - Mer - Ven</span>
+            <span class="time">17:00 - 19:00</span>
+            <span class="field-label">📍 Città dell'Infiorata</span>
+        </div>
+    </div>
+</div>
+
+<script>
+function filterPrograms() {
+    let searchVal = document.getElementById('teamSearch').value.toUpperCase();
+    let fieldVal = document.getElementById('fieldFilter').value.toUpperCase();
+    let cards = document.getElementsByClassName('card');
+
+    for (let i = 0; i < cards.length; i++) {
+        let teamName = cards[i].getAttribute('data-team').toUpperCase();
+        let fields = cards[i].getAttribute('data-fields').toUpperCase();
+        
+        let matchTeam = teamName.indexOf(searchVal) > -1;
+        let matchField = fieldVal === "" || fields.indexOf(fieldVal) > -1;
+
+        if (matchTeam && matchField) {
+            cards[i].classList.remove('hidden');
+        } else {
+            cards[i].classList.add('hidden');
+        }
+    }
+}
+</script>
+
+</body>
+</html>
