@@ -3,33 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programma Allenamenti - Cynthia</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Palinsesto Allenamenti - Cynthia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #003366;
-            --bg: #f4f7f6;
-            --text: #333;
+            --bg: #f2f4f7;
+            --text: #1a1a1a;
             --white: #ffffff;
-            --accent: #dee2e6;
+            --accent: #d1d9e6;
         }
 
         body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
-        header { text-align: center; padding: 30px 20px; background: var(--white); margin-bottom: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .logo { max-width: 100px; margin-bottom: 10px; }
-        
-        .filter-section { max-width: 1000px; margin: 0 auto 30px auto; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        .filter-input, .filter-select { padding: 12px 20px; border: 1px solid var(--accent); border-radius: 8px; font-size: 1rem; outline: none; transition: 0.3s; min-width: 250px; }
-        .filter-input:focus, .filter-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,51,102,0.1); }
+        header { text-align: center; padding: 30px; background: var(--white); margin-bottom: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .logo { max-width: 90px; margin-bottom: 10px; }
+        h1 { font-size: 1.4rem; color: var(--primary); text-transform: uppercase; margin: 0; }
 
-        .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-        .card { background: var(--white); padding: 25px; border-radius: 12px; border-top: 4px solid var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-        .team-name { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px solid var(--accent); padding-bottom: 10px; }
-        .session { padding: 10px 0; border-bottom: 1px dashed var(--accent); }
-        .session:last-child { border-bottom: none; }
-        .day { font-weight: 600; color: #555; font-size: 0.85rem; text-transform: uppercase; }
-        .time { display: block; font-size: 1.05rem; margin: 2px 0; font-weight: 500; }
-        .field-label { font-size: 0.85rem; color: #0066cc; font-weight: 500; }
+        /* Filtri */
+        .filter-section { max-width: 1100px; margin: 0 auto 30px auto; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .filter-input, .filter-select { padding: 14px; border: 1px solid var(--accent); border-radius: 8px; font-size: 0.95rem; min-width: 200px; }
+        
+        /* Griglia */
+        .container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
+        
+        .card { 
+            background: var(--white); 
+            padding: 15px; 
+            border-radius: 10px; 
+            border-left: 6px solid var(--primary);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+
+        .card:hover { transform: scale(1.02); }
+
+        .team-title { font-weight: 700; color: var(--primary); font-size: 1.1rem; margin-bottom: 8px; }
+        .day-badge { background: #eef2f7; color: #444; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; display: inline-block; margin-bottom: 8px; }
+        .time-info { display: block; font-weight: 500; font-size: 1rem; margin: 5px 0; }
+        .field-info { font-size: 0.85rem; color: #666; font-style: italic; }
+
         .hidden { display: none !important; }
     </style>
 </head>
@@ -37,105 +49,86 @@
 
 <header>
     <img src="CYTNHIA1920.jpg" alt="Logo Cynthia" class="logo">
-    <h1>Calendario Allenamenti Settimanali</h1>
+    <h1>Piano Allenamenti Settimanali</h1>
 </header>
 
 <div class="filter-section">
-    <input type="text" id="teamSearch" class="filter-input" placeholder="Cerca squadra..." onkeyup="filterPrograms()">
-    <select id="fieldFilter" class="filter-select" onchange="filterPrograms()">
+    <input type="text" id="teamSearch" class="filter-input" placeholder="Cerca Squadra o Mister..." onkeyup="filter()">
+    <select id="dayFilter" class="filter-select" onchange="filter()">
+        <option value="">Tutti i giorni</option>
+        <option value="LUNEDI">Lunedì</option>
+        <option value="MARTEDI">Martedì</option>
+        <option value="MERCOLEDI">Mercoledì</option>
+        <option value="GIOVEDI">Giovedì</option>
+        <option value="VENERDI">Venerdì</option>
+    </select>
+    <select id="fieldFilter" class="filter-select" onchange="filter()">
         <option value="">Tutti i campi</option>
-        <option value="ABBATINI BRUNO">Abbatini Bruno</option>
-        <option value="CITTA' DELL'INFIORATA">Città dell'Infiorata</option>
-        <option value="MONTEGIOVE">Montegiove</option>
+        <option value="ABBATINI">Abbatini Bruno</option>
+        <option value="INFIORATA">Città dell'Infiorata</option>
     </select>
 </div>
 
 <div class="container" id="scheduleContainer">
-    <div class="card" data-team="PROMOZIONE" data-fields="ABBATINI BRUNO">
-        <div class="team-name">PROMOZIONE</div>
-        <div class="session"><span class="day">Mar - Mer - Ven</span><span class="time">18:00 - 20:00</span><span class="field-label">📍 Abbatini Bruno</span></div>
+    <div class="card" data-team="PROMOZIONE" data-day="MARTEDI" data-field="ABBATINI">
+        <div class="day-badge">MARTEDÌ</div>
+        <div class="team-title">PROMOZIONE</div>
+        <span class="time-info">18:00 - 20:00</span>
+        <span class="field-info">📍 Abbatini Bruno</span>
+    </div>
+    <div class="card" data-team="PROMOZIONE" data-day="MERCOLEDI" data-field="ABBATINI">
+        <div class="day-badge">MERCOLEDÌ</div>
+        <div class="team-title">PROMOZIONE</div>
+        <span class="time-info">18:00 - 20:00</span>
+        <span class="field-info">📍 Abbatini Bruno</span>
+    </div>
+    <div class="card" data-team="PROMOZIONE" data-day="VENERDI" data-field="ABBATINI">
+        <div class="day-badge">VENERDÌ</div>
+        <div class="team-title">PROMOZIONE</div>
+        <span class="time-info">18:00 - 20:00</span>
+        <span class="field-info">📍 Abbatini Bruno</span>
     </div>
 
-    <div class="card" data-team="UNDER 19" data-fields="CITTA' DELL'INFIORATA">
-        <div class="team-name">UNDER 19</div>
-        <div class="session"><span class="day">Lun (20:00) - Mer/Gio (19:30)</span><span class="time">Fine: 21:00/21:30</span><span class="field-label">📍 Città dell'Infiorata</span></div>
+    <div class="card" data-team="UNDER 19" data-day="LUNEDI" data-field="INFIORATA">
+        <div class="day-badge">LUNEDÌ</div>
+        <div class="team-title">UNDER 19</div>
+        <span class="time-info">20:00 - 21:30</span>
+        <span class="field-info">📍 Città dell'Infiorata</span>
+    </div>
+    <div class="card" data-team="UNDER 14 MISTER CARIOTI" data-day="MARTEDI" data-field="INFIORATA">
+        <div class="day-badge">MARTEDÌ</div>
+        <div class="team-title">U14 (Mister Carioti)</div>
+        <span class="time-info">15:30 - 17:00</span>
+        <span class="field-info">📍 Città dell'Infiorata</span>
     </div>
 
-    <div class="card" data-team="UNDER 17" data-fields="CITTA' DELL'INFIORATA">
-        <div class="team-name">UNDER 17</div>
-        <div class="session"><span class="day">Mar - Mer - Ven</span><span class="time">Varie (pomeriggio)</span><span class="field-label">📍 Città dell'Infiorata</span></div>
+    <div class="card" data-team="UNDER 14 MISTER PENDENZA" data-day="GIOVEDI" data-field="INFIORATA">
+        <div class="day-badge">GIOVEDÌ</div>
+        <div class="team-title">U14 (Mister Pendenza)</div>
+        <span class="time-info">15:30 - 17:00</span>
+        <span class="field-info">📍 Città dell'Infiorata</span>
     </div>
 
-    <div class="card" data-team="UNDER 16" data-fields="CITTA' DELL'INFIORATA">
-        <div class="team-name">UNDER 16</div>
-        <div class="session"><span class="day">Lun - Mar - Gio</span><span class="time">18:30 / 19:00</span><span class="field-label">📍 Città dell'Infiorata</span></div>
     </div>
-
-    <div class="card" data-team="UNDER 15" data-fields="CITTA' DELL'INFIORATA">
-        <div class="team-name">UNDER 15</div>
-        <div class="session"><span class="day">Lun - Mer - Ven</span><span class="time">17:00 - 18:30</span><span class="field-label">📍 Città dell'Infiorata</span></div>
-    </div>
-
-    <div class="card" data-team="UNDER 14" data-fields="CITTA' DELL'INFIORATA">
-        <div class="team-name">UNDER 14</div>
-        <div class="session"><span class="day">Mar - Gio - Ven</span><span class="time">15:30 / 17:00</span><span class="field-label">📍 Città dell'Infiorata</span></div>
-    </div>
-
-    <div class="card" data-team="ESORDIENTI 2012" data-fields="MONTEGIOVE">
-        <div class="team-name">ESORDIENTI 2012</div>
-        <div class="session"><span class="day">Lun - Mer - Ven</span><span class="time">17:30 - 19:00</span><span class="field-label">📍 Montegiove</span></div>
-    </div>
-
-    <div class="card" data-team="ESORDIENTI 2013" data-fields="MONTEGIOVE">
-        <div class="team-name">ESORDIENTI 2013</div>
-        <div class="session"><span class="day">Lun - Mer - Ven</span><span class="time">17:30 - 19:00</span><span class="field-label">📍 Montegiove</span></div>
-    </div>
-
-    <div class="card" data-team="PULCINI 2014" data-fields="MONTEGIOVE">
-        <div class="team-name">PULCINI 2014</div>
-        <div class="session"><span class="day">Mar - Gio - Ven</span><span class="time">17:30 - 19:00</span><span class="field-label">📍 Montegiove</span></div>
-    </div>
-
-    <div class="card" data-team="PULCINI 2015" data-fields="MONTEGIOVE">
-        <div class="team-name">PULCINI 2015</div>
-        <div class="session"><span class="day">Mar - Gio - Ven</span><span class="time">17:30 - 19:00</span><span class="field-label">📍 Montegiove</span></div>
-    </div>
-
-    <div class="card" data-team="PRIMI CALCI 2016" data-fields="MONTEGIOVE">
-        <div class="team-name">PRIMI CALCI 2016</div>
-        <div class="session"><span class="day">Lun - Mer - Ven</span><span class="time">15:30 - 17:00</span><span class="field-label">📍 Montegiove</span></div>
-    </div>
-
-    <div class="card" data-team="PRIMI CALCI 2017" data-fields="MONTEGIOVE">
-        <div class="team-name">PRIMI CALCI 2017</div>
-        <div class="session"><span class="day">Lun - Mer - Ven</span><span class="time">15:30 - 17:00</span><span class="field-label">📍 Montegiove</span></div>
-    </div>
-
-    <div class="card" data-team="PICCOLI AMICI 2018/19" data-fields="MONTEGIOVE">
-        <div class="team-name">PICCOLI AMICI 2018/19</div>
-        <div class="session"><span class="day">Mar - Gio</span><span class="time">15:30 - 17:00</span><span class="field-label">📍 Montegiove</span></div>
-    </div>
-</div>
 
 <script>
-function filterPrograms() {
-    let searchVal = document.getElementById('teamSearch').value.toUpperCase();
-    let fieldVal = document.getElementById('fieldFilter').value.toUpperCase();
-    let cards = document.getElementsByClassName('card');
+function filter() {
+    let q = document.getElementById('teamSearch').value.toUpperCase();
+    let d = document.getElementById('dayFilter').value.toUpperCase();
+    let f = document.getElementById('fieldFilter').value.toUpperCase();
+    let cards = document.querySelectorAll('.card');
 
-    for (let i = 0; i < cards.length; i++) {
-        let teamName = cards[i].getAttribute('data-team').toUpperCase();
-        let fields = cards[i].getAttribute('data-fields').toUpperCase();
-        
-        let matchTeam = teamName.includes(searchVal);
-        let matchField = fieldVal === "" || fields.includes(fieldVal);
+    cards.forEach(card => {
+        let textMatch = card.getAttribute('data-team').includes(q);
+        let dayMatch = d === "" || card.getAttribute('data-day') === d;
+        let fieldMatch = f === "" || card.getAttribute('data-field').includes(f);
 
-        if (matchTeam && matchField) {
-            cards[i].classList.remove('hidden');
+        if (textMatch && dayMatch && fieldMatch) {
+            card.classList.remove('hidden');
         } else {
-            cards[i].classList.add('hidden');
+            card.classList.add('hidden');
         }
-    }
+    });
 }
 </script>
 
