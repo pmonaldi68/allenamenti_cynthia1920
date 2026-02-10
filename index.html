@@ -7,69 +7,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f4f7fa;
-            --text: #1e293b;
-            --white: #ffffff;
-            --primary: #003366;
-            --abbatini: #003366;
-            --infiorata: #00a8e8;
-            --montegiove: #2ecc71;
+            --bg: #f4f7fa; --text: #1e293b; --white: #ffffff; --primary: #003366;
+            --abbatini: #003366; --infiorata: #00a8e8; --montegiove: #2ecc71;
             --lun: #475569; --mar: #10b981; --mer: #f59e0b; --gio: #8b5cf6; --ven: #ef4444;
         }
-
         body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
-        
-        header { 
-            text-align: center; padding: 30px; background: var(--white); 
-            margin-bottom: 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-        }
-
+        header { text-align: center; padding: 30px; background: var(--white); margin-bottom: 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .logo { max-width: 110px; height: auto; margin-bottom: 15px; }
         h1 { font-size: 1.6rem; color: var(--primary); text-transform: uppercase; margin: 0; letter-spacing: 1px; }
-
-        .filter-section { 
-            max-width: 1100px; margin: 0 auto 30px auto; 
-            display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; 
-        }
-
-        .filter-input, .filter-select { 
-            padding: 14px 20px; border: 2px solid #e2e8f0; border-radius: 12px; 
-            font-size: 1rem; min-width: 260px; outline: none; transition: 0.3s;
-        }
-        .filter-input:focus { border-color: var(--infiorata); box-shadow: 0 0 0 4px rgba(0,168,232,0.1); }
-
+        .filter-section { max-width: 1100px; margin: 0 auto 30px auto; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+        .filter-input, .filter-select { padding: 14px 20px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; min-width: 260px; outline: none; transition: 0.3s; }
         .team-group { max-width: 1100px; margin: 0 auto 40px auto; }
-        .team-header { 
-            font-size: 1.3rem; font-weight: 800; color: var(--primary); 
-            text-transform: uppercase; border-bottom: 4px solid var(--primary); 
-            padding-bottom: 8px; margin-bottom: 20px; display: block;
-        }
-
-        .grid-container { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; 
-        }
-
-        .card { 
-            background: var(--white); padding: 20px; border-radius: 16px; 
-            border-left: 10px solid #ddd;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            display: flex; flex-direction: column; transition: 0.3s;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
-
-        .day-badge { 
-            padding: 6px 14px; border-radius: 8px; font-weight: 700; 
-            font-size: 0.8rem; display: inline-block; margin-bottom: 15px; 
-            align-self: flex-start; color: white; text-transform: uppercase;
-        }
-
-        .time-row { font-size: 1.2rem; font-weight: 700; color: #334155; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .field-row { font-size: 0.95rem; color: #64748b; font-weight: 500; display: flex; align-items: center; gap: 8px; }
-
+        .team-header { font-size: 1.3rem; font-weight: 800; color: var(--primary); text-transform: uppercase; border-bottom: 4px solid var(--primary); padding-bottom: 8px; margin-bottom: 20px; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: var(--white); padding: 20px; border-radius: 16px; border-left: 10px solid #ddd; box-shadow: 0 4px 6px rgba(0,0,0,0.02); display: flex; flex-direction: column; }
+        .day-badge { padding: 6px 14px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; display: inline-block; margin-bottom: 15px; align-self: flex-start; color: white; text-transform: uppercase; }
+        .time-row { font-size: 1.2rem; font-weight: 700; color: #334155; margin-bottom: 8px; }
+        .field-row { font-size: 0.95rem; color: #64748b; font-weight: 500; }
         .loading { text-align: center; font-size: 1.2rem; font-weight: 600; padding: 100px; color: #94a3b8; }
         .hidden { display: none !important; }
-
-        @media (max-width: 600px) { .filter-input, .filter-select { min-width: 100%; } }
     </style>
 </head>
 <body>
@@ -91,57 +47,39 @@
     </select>
 </div>
 
-<div id="loader" class="loading">Caricamento dati dal foglio Google...</div>
+<div id="loader" class="loading">🔄 Caricamento dati Cynthia...</div>
 <div id="content"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+
 <script>
-    // Configurazione
     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRcfggcqh-gbdBcErqn9RP0JMx6HVrCXWReKDnixI3JMnVlF_J9cpaws3sHgEfUztCbjHELFws-_O9J/pub?output=csv';
     const allowed = ["PROMOZIONE", "UNDER19", "UNDER17", "UNDER16", "UNDER15", "CARIOTI", "PENDENZA"];
 
-    async function start() {
-        try {
-            const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(csvUrl)}&t=${Date.now()}`);
-            const json = await res.json();
-            const rows = parseCSV(json.contents);
-            
-            render(rows);
-            document.getElementById('loader').style.display = 'none';
-        } catch (e) {
-            document.getElementById('loader').innerHTML = "Errore di connessione. Ricarica la pagina.";
-        }
-    }
-
-    function parseCSV(str) {
-        const arr = [];
-        let quote = false;
-        for (let row = col = c = 0; c < str.length; c++) {
-            let cc = str[c], nc = str[c+1];
-            arr[row] = arr[row] || [];
-            arr[row][col] = arr[row][col] || '';
-            if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }
-            if (cc == '"') { quote = !quote; continue; }
-            if (cc == ',' && !quote) { ++col; continue; }
-            if (cc == '\r' && nc == '\n' && !quote) { ++row; col = 0; ++c; continue; }
-            if (cc == '\n' && !quote) { ++row; col = 0; continue; }
-            if (cc == '\r' && !quote) { ++row; col = 0; continue; }
-            arr[row][col] += cc;
-        }
-        return arr;
+    function init() {
+        Papa.parse(csvUrl, {
+            download: true,
+            header: false,
+            complete: function(results) {
+                render(results.data);
+                document.getElementById('loader').style.display = 'none';
+            },
+            error: function() {
+                document.getElementById('loader').innerHTML = "Errore di connessione. Verifica che il file sia pubblicato su Google Sheets.";
+            }
+        });
     }
 
     function render(rows) {
         const content = document.getElementById('content');
         const groups = {};
 
-        // Organizza i dati
         rows.forEach((cols, index) => {
             if (index === 0 || !cols[0]) return;
             const name = cols[0].trim().toUpperCase();
             
             if (allowed.some(a => name.includes(a))) {
                 if (!groups[name]) groups[name] = [];
-                // Gestione 3 blocchi di allenamento
                 for (let i = 1; i <= 9; i += 4) {
                     if (cols[i+1] && cols[i+1].length > 2) {
                         groups[name].push({
@@ -155,7 +93,6 @@
             }
         });
 
-        // Genera HTML
         for (const team in groups) {
             const div = document.createElement('div');
             div.className = 'team-group';
@@ -193,7 +130,6 @@
     function filter() {
         const q = document.getElementById('teamSearch').value.toUpperCase();
         const d = document.getElementById('dayFilter').value.toUpperCase();
-        
         document.querySelectorAll('.team-group').forEach(group => {
             let hasVisible = false;
             const name = group.getAttribute('data-name');
@@ -207,7 +143,7 @@
         });
     }
 
-    start();
+    init();
 </script>
 </body>
 </html>
