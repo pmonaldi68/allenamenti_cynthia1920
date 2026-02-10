@@ -3,50 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Palinsesto Allenamenti - Cynthia</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Palinsesto Allenamenti Live - Cynthia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #003366;
-            --bg: #f2f4f7;
-            --text: #1a1a1a;
+            --bg: #f8f9fa;
+            --text: #212529;
             --white: #ffffff;
-            --accent: #d1d9e6;
+            /* Colori Impianti */
+            --color-abbatini: #003366;
+            --color-infiorata: #007bff;
+            --color-default: #6c757d;
         }
 
         body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
-        header { text-align: center; padding: 30px; background: var(--white); margin-bottom: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .logo { max-width: 90px; margin-bottom: 10px; }
-        h1 { font-size: 1.4rem; color: var(--primary); text-transform: uppercase; margin: 0; }
-
-        .filter-section { max-width: 1100px; margin: 0 auto 30px auto; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        .filter-input, .filter-select { padding: 14px; border: 1px solid var(--accent); border-radius: 8px; font-size: 0.95rem; min-width: 200px; }
         
-        .container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-        
-        .card { 
+        header { 
+            text-align: center; 
+            padding: 30px; 
             background: var(--white); 
-            padding: 15px; 
-            border-radius: 10px; 
-            border-left: 6px solid var(--primary);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
+            margin-bottom: 25px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
         }
 
-        .team-title { font-weight: 700; color: var(--primary); font-size: 1.1rem; margin-bottom: 8px; text-transform: uppercase; }
-        .day-badge { background: #eef2f7; color: #444; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; display: inline-block; margin-bottom: 8px; align-self: flex-start; }
-        .time-info { display: block; font-weight: 500; font-size: 1rem; margin: 5px 0; }
-        .field-info { font-size: 0.85rem; color: #666; font-style: italic; }
-        .loading { text-align: center; font-weight: bold; padding: 50px; }
+        /* Correzione visualizzazione Logo */
+        .logo { 
+            max-width: 120px; 
+            height: auto; 
+            display: block; 
+            margin: 0 auto 15px auto;
+        }
+
+        h1 { font-size: 1.6rem; color: var(--color-abbatini); text-transform: uppercase; margin: 0; }
+
+        .filter-section { 
+            max-width: 1100px; 
+            margin: 0 auto 30px auto; 
+            display: flex; 
+            gap: 12px; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+        }
+
+        .filter-input, .filter-select { 
+            padding: 12px 15px; 
+            border: 2px solid #ddd; 
+            border-radius: 10px; 
+            font-size: 1rem; 
+            min-width: 220px; 
+            outline: none;
+        }
+
+        .filter-input:focus { border-color: var(--color-infiorata); }
+
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+
+        /* Card Dinamica */
+        .card { 
+            background: var(--white); 
+            padding: 20px; 
+            border-radius: 12px; 
+            border-left: 8px solid var(--color-default); /* Cambia in base all'impianto */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        /* Colori Badge Giorni */
+        .day-badge { 
+            padding: 5px 12px; 
+            border-radius: 6px; 
+            font-weight: 700; 
+            font-size: 0.75rem; 
+            display: inline-block; 
+            margin-bottom: 12px; 
+            align-self: flex-start;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        /* Classi colori giorni */
+        .bg-lunedi { background-color: #34495e; }
+        .bg-martedi { background-color: #27ae60; }
+        .bg-mercoledi { background-color: #f39c12; }
+        .bg-giovedi { background-color: #8e44ad; }
+        .bg-venerdi { background-color: #c0392b; }
+
+        .team-title { font-weight: 700; color: #333; font-size: 1.15rem; margin-bottom: 10px; line-height: 1.2; }
+        .time-info { font-size: 1.1rem; font-weight: 600; margin-bottom: 5px; color: #444; }
+        .field-info { font-size: 0.9rem; color: #666; font-weight: 500; }
+
+        .loading { text-align: center; font-weight: bold; padding: 50px; font-size: 1.2rem; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="CYTNHIA1920.jpg" alt="Logo Cynthia" class="logo">
-    <h1>Piano Allenamenti Settimanali</h1>
+    <img src="CYTNHIA1920.jpg" alt="Logo Cynthia" class="logo" onerror="this.style.display='none'; console.log('Logo non trovato');">
+    <h1>Piano Allenamenti Live</h1>
 </header>
 
 <div class="filter-section">
@@ -58,94 +123,4 @@
         <option value="MERCOLEDI">Mercoledì</option>
         <option value="GIOVEDI">Giovedì</option>
         <option value="VENERDI">Venerdì</option>
-    </select>
-</div>
-
-<div id="loading" class="loading">Caricamento allenamenti in corso...</div>
-<div class="container" id="scheduleContainer"></div>
-
-<script>
-    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRcfggcqh-gbdBcErqn9RP0JMx6HVrCXWReKDnixI3JMnVlF_J9cpaws3sHgEfUztCbjHELFws-_O9J/pub?output=csv';
-
-    // Categorie permesse
-    const allowedTeams = [
-        "PROMOZIONE", "UNDER19", "UNDER17", "UNDER16", 
-        "UNDER15", "UNDER14 MISTER CARIOTI", "UNDER14 MISTER PENDENZA"
-    ];
-
-    async function fetchData() {
-        try {
-            const response = await fetch(csvUrl);
-            const data = await response.text();
-            const rows = data.split('\n').slice(1); // Salta l'intestazione
-            
-            const container = document.getElementById('scheduleContainer');
-            container.innerHTML = '';
-            document.getElementById('loading').style.display = 'none';
-
-            rows.forEach(row => {
-                const cols = row.split(',');
-                if (cols.length < 5) return;
-
-                const teamName = cols[0].trim().toUpperCase();
-                
-                // Filtriamo solo le squadre che ti interessano
-                if (allowedTeams.some(t => teamName.includes(t))) {
-                    
-                    // Ciclo per i 3 possibili allenamenti nel CSV
-                    // Col 1,2,3,4 (All 1) | Col 5,6,7,8 (All 2) | Col 9,10,11,12 (All 3)
-                    const trainingSessions = [
-                        { campo: cols[1], giorno: cols[2], inizio: cols[3], fine: cols[4] },
-                        { campo: cols[5], giorno: cols[6], inizio: cols[7], fine: cols[8] },
-                        { campo: cols[9], giorno: cols[10], inizio: cols[11], fine: cols[12] }
-                    ];
-
-                    trainingSessions.forEach(session => {
-                        if (session.giorno && session.giorno.trim() !== "") {
-                            const card = document.createElement('div');
-                            card.className = 'card';
-                            card.setAttribute('data-team', teamName);
-                            card.setAttribute('data-day', session.giorno.trim().replace("'", "").toUpperCase());
-                            
-                            card.innerHTML = `
-                                <div class="day-badge">${session.giorno.toUpperCase()}</div>
-                                <div class="team-title">${teamName}</div>
-                                <span class="time-info">${session.inizio} - ${session.fine}</span>
-                                <span class="field-info">📍 ${session.campo}</span>
-                            `;
-                            container.appendChild(card);
-                        }
-                    });
-                }
-            });
-        } catch (error) {
-            console.error('Errore nel caricamento dati:', error);
-            document.getElementById('loading').innerText = 'Errore nel caricamento dei dati.';
-        }
-    }
-
-    function filter() {
-        let q = document.getElementById('teamSearch').value.toUpperCase();
-        let d = document.getElementById('dayFilter').value.toUpperCase();
-        let cards = document.querySelectorAll('.card');
-
-        cards.forEach(card => {
-            let team = card.getAttribute('data-team');
-            let day = card.getAttribute('data-day');
-            
-            let matchText = team.includes(q);
-            let matchDay = d === "" || day.includes(d);
-
-            if (matchText && matchDay) {
-                card.classList.remove('hidden');
-            } else {
-                card.classList.add('hidden');
-            }
-        });
-    }
-
-    fetchData();
-</script>
-
-</body>
-</html>
+    </select
