@@ -19,11 +19,9 @@
         .logo { max-width: 90px; margin-bottom: 10px; }
         h1 { font-size: 1.4rem; color: var(--primary); text-transform: uppercase; margin: 0; }
 
-        /* Filtri */
         .filter-section { max-width: 1100px; margin: 0 auto 30px auto; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
         .filter-input, .filter-select { padding: 14px; border: 1px solid var(--accent); border-radius: 8px; font-size: 0.95rem; min-width: 200px; }
         
-        /* Griglia */
         .container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; }
         
         .card { 
@@ -36,101 +34,11 @@
         }
 
         .card:hover { transform: scale(1.02); }
-
         .team-title { font-weight: 700; color: var(--primary); font-size: 1.1rem; margin-bottom: 8px; }
         .day-badge { background: #eef2f7; color: #444; padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; display: inline-block; margin-bottom: 8px; }
         .time-info { display: block; font-weight: 500; font-size: 1rem; margin: 5px 0; }
         .field-info { font-size: 0.85rem; color: #666; font-style: italic; }
-
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
-
-<header>
-    <img src="CYTNHIA1920.jpg" alt="Logo Cynthia" class="logo">
-    <h1>Piano Allenamenti Settimanali</h1>
-</header>
-
-<div class="filter-section">
-    <input type="text" id="teamSearch" class="filter-input" placeholder="Cerca Squadra o Mister..." onkeyup="filter()">
-    <select id="dayFilter" class="filter-select" onchange="filter()">
-        <option value="">Tutti i giorni</option>
-        <option value="LUNEDI">Lunedì</option>
-        <option value="MARTEDI">Martedì</option>
-        <option value="MERCOLEDI">Mercoledì</option>
-        <option value="GIOVEDI">Giovedì</option>
-        <option value="VENERDI">Venerdì</option>
-    </select>
-    <select id="fieldFilter" class="filter-select" onchange="filter()">
-        <option value="">Tutti i campi</option>
-        <option value="ABBATINI">Abbatini Bruno</option>
-        <option value="INFIORATA">Città dell'Infiorata</option>
-    </select>
-</div>
-
-<div class="container" id="scheduleContainer">
-    <div class="card" data-team="PROMOZIONE" data-day="MARTEDI" data-field="ABBATINI">
-        <div class="day-badge">MARTEDÌ</div>
-        <div class="team-title">PROMOZIONE</div>
-        <span class="time-info">18:00 - 20:00</span>
-        <span class="field-info">📍 Abbatini Bruno</span>
-    </div>
-    <div class="card" data-team="PROMOZIONE" data-day="MERCOLEDI" data-field="ABBATINI">
-        <div class="day-badge">MERCOLEDÌ</div>
-        <div class="team-title">PROMOZIONE</div>
-        <span class="time-info">18:00 - 20:00</span>
-        <span class="field-info">📍 Abbatini Bruno</span>
-    </div>
-    <div class="card" data-team="PROMOZIONE" data-day="VENERDI" data-field="ABBATINI">
-        <div class="day-badge">VENERDÌ</div>
-        <div class="team-title">PROMOZIONE</div>
-        <span class="time-info">18:00 - 20:00</span>
-        <span class="field-info">📍 Abbatini Bruno</span>
-    </div>
-
-    <div class="card" data-team="UNDER 19" data-day="LUNEDI" data-field="INFIORATA">
-        <div class="day-badge">LUNEDÌ</div>
-        <div class="team-title">UNDER 19</div>
-        <span class="time-info">20:00 - 21:30</span>
-        <span class="field-info">📍 Città dell'Infiorata</span>
-    </div>
-    <div class="card" data-team="UNDER 14 MISTER CARIOTI" data-day="MARTEDI" data-field="INFIORATA">
-        <div class="day-badge">MARTEDÌ</div>
-        <div class="team-title">U14 (Mister Carioti)</div>
-        <span class="time-info">15:30 - 17:00</span>
-        <span class="field-info">📍 Città dell'Infiorata</span>
-    </div>
-
-    <div class="card" data-team="UNDER 14 MISTER PENDENZA" data-day="GIOVEDI" data-field="INFIORATA">
-        <div class="day-badge">GIOVEDÌ</div>
-        <div class="team-title">U14 (Mister Pendenza)</div>
-        <span class="time-info">15:30 - 17:00</span>
-        <span class="field-info">📍 Città dell'Infiorata</span>
-    </div>
-
-    </div>
-
-<script>
-function filter() {
-    let q = document.getElementById('teamSearch').value.toUpperCase();
-    let d = document.getElementById('dayFilter').value.toUpperCase();
-    let f = document.getElementById('fieldFilter').value.toUpperCase();
-    let cards = document.querySelectorAll('.card');
-
-    cards.forEach(card => {
-        let textMatch = card.getAttribute('data-team').includes(q);
-        let dayMatch = d === "" || card.getAttribute('data-day') === d;
-        let fieldMatch = f === "" || card.getAttribute('data-field').includes(f);
-
-        if (textMatch && dayMatch && fieldMatch) {
-            card.classList.remove('hidden');
-        } else {
-            card.classList.add('hidden');
-        }
-    });
-}
-</script>
-
-</body>
-</html>
